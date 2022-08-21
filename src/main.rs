@@ -1,8 +1,8 @@
 use figure_second::inkscape;
+use std::fs;
 use std::io::prelude::*;
 use std::io::BufReader;
 use std::path::PathBuf;
-use std::fs;
 
 fn main() {
     let path = PathBuf::from("./static/simple-inkscape-drawing.svg");

@@ -101,9 +101,9 @@ pub fn parse_svg<'a, R: BufRead>(reader: R, buffer: &'a mut Vec<u8>) -> Result<I
 
     let (leading_events, first_group) = leading_events(&mut reader, buffer)?;
 
-    println!("\n\n\n\n\n\n");
-    dbg!(&leading_events);
-    dbg!(&first_group);
+    //println!("\n\n\n\n\n\n");
+    //dbg!(&leading_events);
+    //dbg!(&first_group);
 
     // read the inner layers
     let (layers, first_trailing) = if let Some(first_group) = first_group {
@@ -113,7 +113,7 @@ pub fn parse_svg<'a, R: BufRead>(reader: R, buffer: &'a mut Vec<u8>) -> Result<I
         (vec![], None)
     };
 
-    dbg!(&layers, &first_trailing);
+    //dbg!(&layers, &first_trailing);
 
     let trailing_events = if let Some(first_trailing) = first_trailing {
         trailing_events(&mut reader, buffer, first_trailing)?
@@ -121,7 +121,7 @@ pub fn parse_svg<'a, R: BufRead>(reader: R, buffer: &'a mut Vec<u8>) -> Result<I
         Vec::new()
     };
 
-    dbg!(&trailing_events);
+    //dbg!(&trailing_events);
 
     let inkscape = Inkscape {
         leading_events,
@@ -140,7 +140,7 @@ fn leading_events<R: BufRead>(
     while let Ok(event) = reader.read_event(buffer) {
         let event = event.into_owned();
 
-        dbg!(&event);
+        //dbg!(&event);
         if let Event::Start(element) = event {
             if element.name() == b"g" {
                 // we are at the first layer event, leave this function

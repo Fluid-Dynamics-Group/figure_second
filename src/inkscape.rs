@@ -2,9 +2,9 @@ use anyhow::Context;
 use anyhow::Result;
 use quick_xml::events::BytesStart;
 use quick_xml::events::Event;
-use serde::{Deserialize, Serialize};
 use std::borrow::Cow;
 use std::io::BufRead;
+use std::io::Write;
 
 #[derive(Debug)]
 pub struct Inkscape {
@@ -27,6 +27,16 @@ enum Object {
     /// other does not necessarily have to be a image or geometrical event,
     /// it could also be spacing events
     Other(Event<'static>),
+}
+
+impl Object {
+    fn into_event(self) -> Event<'static> {
+        match self {
+            Self::Rectangle(rect) => Event::Empty(rect.element),
+            Self::Image(image) => Event::Empty(image.element),
+            Self::Other(object) => object,
+        }
+    }
 }
 
 #[derive(Debug)]
@@ -96,6 +106,38 @@ impl Identifiers {
     }
 }
 
+/// Export an [`Inkscape`] object to a file
+pub fn write_svg<'a, W: Write>(writer: W, doc: Inkscape) -> Result<()> {
+    let mut writer = quick_xml::Writer::new(writer);
+
+    for event in doc.leading_events {
+        writer.write_event(&event)
+            .with_context(|| format!("failed to write a leading event: {:?}", event))?;
+    }
+
+    for layer in doc.layers {
+        writer.write_event(&layer.header)
+            .with_context(|| format!("failed to write header for layer : {:?}", layer.header))?;
+
+        for object in layer.content {
+            let event = object.into_event();
+            writer.write_event(&event)
+                .with_context(|| format!("failed to write inner object for layer : {:?}", event))?;
+        }
+
+        writer.write_event(&layer.footer)
+            .with_context(|| format!("failed to write footer for layer : {:?}", layer.footer))?;
+    }
+
+    for event in doc.trailing_events {
+        writer.write_event(&event)
+            .with_context(|| format!("failed to write a trailing event: {:?}", event))?;
+    }
+
+
+    Ok(())
+}
+
 pub fn parse_svg<'a, R: BufRead>(reader: R, buffer: &'a mut Vec<u8>) -> Result<Inkscape> {
     let mut reader = quick_xml::Reader::from_reader(reader);
 
@@ -140,12 +182,12 @@ fn leading_events<R: BufRead>(
     while let Ok(event) = reader.read_event(buffer) {
         let event = event.into_owned();
 
-        //dbg!(&event);
         if let Event::Start(element) = event {
             if element.name() == b"g" {
-                // we are at the first layer event, leave this function
-
                 return Ok((out, Some(element)));
+            }
+            else {
+                out.push(Event::Start(element));
             }
         } else {
             out.push(event);

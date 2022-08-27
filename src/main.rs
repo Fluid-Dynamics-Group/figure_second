@@ -17,12 +17,12 @@ fn main() {
     //let out: inkscape::Svg  = quick_xml::de::from_reader(&mut buf).unwrap();
 
     let mut buffer = Vec::new();
-    let out = inkscape::parse_svg(buf, &mut buffer).unwrap();
+    let out = inkscape::Inkscape::parse_svg(buf, &mut buffer).unwrap();
 
     dbg!(&out);
 
     let writer = std::fs::File::create(&output_svg).unwrap();
     let write_buf = BufWriter::new(writer);
 
-    inkscape::write_svg(write_buf, out).unwrap();
+    out.write_svg(write_buf).unwrap();
 }

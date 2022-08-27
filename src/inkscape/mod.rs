@@ -1,7 +1,7 @@
 mod object;
 mod parse;
 
-use object::EncodedImage;
+pub use object::EncodedImage;
 
 use anyhow::Context;
 use anyhow::Result;
@@ -105,15 +105,40 @@ impl Inkscape {
         Ok(inkscape)
     }
 
-    pub fn id_to_image(&mut self, image: EncodedImage) -> Result<()> {
-        for layer in &self.layers {
+    pub fn id_to_image(&mut self, id: &str, image: EncodedImage) -> Result<()> {
+
+        for layer in &mut self.layers {
+            for object in layer.content.iter_mut() {
+                match object {
+                    object::Object::Rectangle(rect) => {
+                        if rect.ident.id == id {
+                            rect.set_image(image)?;
+                            
+                            return Ok(())
+                        }
+                    }
+                    object::Object::Image(img) => {
+                        if img.ident.id == id {
+                            img.update_image(image)?;
+
+                            return Ok(())
+                        }
+                    }
+                    object::Object::Other(_) => (), 
+                };
+
+            }
         }
 
         anyhow::bail!("id is not contained in the document");
     }
+
+    pub(crate) fn ids(&self) -> IdIterator<'_> {
+        IdIterator::new(&self.layers)
+    }
 }
 
-struct IdIterator<'a> {
+pub(crate) struct IdIterator<'a> {
     curr_group_idx: usize,
     curr_group_object_idx: usize,
     groups: &'a [Group]

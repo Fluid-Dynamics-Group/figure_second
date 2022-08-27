@@ -10,6 +10,7 @@ fn main() {
     let output_svg = PathBuf::from("./static/simple-inkscape-drawing-output.svg");
 
     let figure = PathBuf::from("./static/graph_output_example.png");
+    let encoded_image = inkscape::EncodedImage::from_path(figure).unwrap();
 
     let reader = std::fs::File::open(&path).unwrap();
     let buf = BufReader::new(reader);
@@ -17,12 +18,12 @@ fn main() {
     //let out: inkscape::Svg  = quick_xml::de::from_reader(&mut buf).unwrap();
 
     let mut buffer = Vec::new();
-    let out = inkscape::Inkscape::parse_svg(buf, &mut buffer).unwrap();
-
-    dbg!(&out);
+    let mut out = inkscape::Inkscape::parse_svg(buf, &mut buffer).unwrap();
 
     let writer = std::fs::File::create(&output_svg).unwrap();
     let write_buf = BufWriter::new(writer);
+
+    out.id_to_image("rect286", encoded_image).unwrap();
 
     out.write_svg(write_buf).unwrap();
 }

@@ -181,7 +181,7 @@ impl EncodedImage {
         self.base64_bytes.as_slice()
     }
 
-    pub(crate) fn from_path<T: AsRef<Path>>(path: T) -> Result<Self> {
+    pub fn from_path<T: AsRef<Path>>(path: T) -> Result<Self> {
         let path = path.as_ref();
 
         let mut file = std::fs::File::open(&path)
@@ -191,8 +191,6 @@ impl EncodedImage {
         file.read_to_end(&mut bytes)
             .with_context(|| format!("failed to read bytes of file {} after it was opened", path.display()))?;
 
-        dbg!(bytes.len());
-
         let format = image::guess_format(&bytes)
             .with_context(|| format!("failed to guess format of file - figure-second only handles PNG images"))?;
 
@@ -201,12 +199,12 @@ impl EncodedImage {
         }
 
         let mut base64_buf = String::with_capacity(bytes.len());
+
+        // add some inkscape MIME data to the start of the output
         write!(base64_buf, "data:image/png;base64,").unwrap();
 
         // encode the bytes as base64
         base64::encode_config_buf(bytes, base64::STANDARD, &mut base64_buf);
-
-        dbg!(base64_buf.len());
 
         Ok(
             Self {

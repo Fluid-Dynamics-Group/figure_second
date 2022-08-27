@@ -57,6 +57,14 @@ impl Rectangle {
 
         Ok(())
     }
+
+    #[cfg(test)]
+    pub(crate) fn from_ident(ident: Identifiers) -> Self {
+        Self {
+            ident,
+            element: BytesStart::owned_name(b"rect".to_vec())
+        }
+    }
 }
 
 #[derive(Debug)]
@@ -93,6 +101,14 @@ impl Image {
 
         Ok(())
     }
+
+    #[cfg(test)]
+    pub(crate) fn from_ident(ident: Identifiers) -> Self {
+        Self {
+            ident,
+            element: BytesStart::owned_name(b"image".to_vec())
+        }
+    }
 }
 
 #[derive(Debug)]
@@ -103,6 +119,15 @@ pub(crate) struct Identifiers {
 }
 
 impl Identifiers {
+    #[cfg(test)]
+    pub(crate) fn zeros_with_id<T: Into<String>>(id: T) -> Self {
+        Self {
+            id: id.into(),
+            width: 0.0,
+            height: 0.0,
+        }
+    }
+
     pub(crate) fn from_elem(elem: &BytesStart<'static>) -> Result<Self> {
         let atts = elem
             .attributes()
@@ -146,7 +171,7 @@ impl Identifiers {
     }
 }
 
-pub(crate) struct EncodedImage {
+pub struct EncodedImage {
     // base64 encoded bytes with Inkscape mime type prefixed
     base64_bytes: Vec<u8>
 }

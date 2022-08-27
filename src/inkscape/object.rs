@@ -2,6 +2,11 @@ use anyhow::Context;
 use anyhow::Result;
 use quick_xml::events::BytesStart;
 use quick_xml::events::Event;
+use std::io::Read;
+
+use std::fmt::Write as _;
+
+use std::path::Path;
 
 #[derive(Debug)]
 pub(crate) enum Object {
@@ -25,7 +30,33 @@ impl Object {
 #[derive(Debug)]
 pub(crate) struct Rectangle {
     pub(crate) ident: Identifiers,
-    pub(crate) element: BytesStart<'static>,
+    pub(in crate::inkscape) element: BytesStart<'static>,
+}
+
+impl Rectangle {
+    pub(crate) fn set_image(&mut self, base64_encoded: EncodedImage) -> Result<()> {
+        let new_element = quick_xml::events::BytesStart::owned_name(b"image".to_vec());
+
+        let img_data = quick_xml::events::attributes::Attribute {
+            key: b"xlink:href",
+            value: base64_encoded.as_slice().into()
+        };
+
+        let new_atts = self.element.attributes()
+            .filter_map(Result::ok)
+            // remove attributes from the iterator that are used for rectangular elements
+            .filter(|rect_attribute| rect_attribute.key != b"style")
+            // add on the image data
+            .chain(std::iter::once(img_data));
+
+        // update the element, store it in the current element 
+        // TODO: this updates the underlying element away from `Rectangle`, which may be confusing 
+        // in the future
+        let new_element = new_element.with_attributes(new_atts);
+        self.element = new_element;
+
+        Ok(())
+    }
 }
 
 #[derive(Debug)]
@@ -35,7 +66,33 @@ pub(crate) struct Rectangle {
 /// of the element field.
 pub(crate) struct Image {
     pub(crate) ident: Identifiers,
-    pub(crate) element: BytesStart<'static>,
+    pub(in crate::inkscape) element: BytesStart<'static>,
+}
+
+impl Image {
+    pub(crate) fn update_image(&mut self, base64_encoded: EncodedImage) -> Result<()> {
+        let new_element = quick_xml::events::BytesStart::owned_name(b"image".to_vec());
+
+        let img_data = quick_xml::events::attributes::Attribute {
+            key: b"xlink:href",
+            value: base64_encoded.as_slice().into()
+        };
+
+        let new_atts = self.element.attributes()
+            .filter_map(Result::ok)
+            // remove attributes from the iterator that are used for image elements
+            .filter(|rect_attribute| rect_attribute.key != b"xlink:href")
+            // add on the image data
+            .chain(std::iter::once(img_data));
+
+        // update the element, store it in the current element 
+        // TODO: this updates the underlying element away from `Rectangle`, which may be confusing 
+        // in the future
+        let new_element = new_element.with_attributes(new_atts);
+        self.element = new_element;
+
+        Ok(())
+    }
 }
 
 #[derive(Debug)]
@@ -87,4 +144,109 @@ impl Identifiers {
 
         Ok(out)
     }
+}
+
+pub(crate) struct EncodedImage {
+    // base64 encoded bytes with Inkscape mime type prefixed
+    base64_bytes: Vec<u8>
+}
+
+impl EncodedImage {
+    fn as_slice(&self) -> &[u8] {
+        self.base64_bytes.as_slice()
+    }
+
+    pub(crate) fn from_path<T: AsRef<Path>>(path: T) -> Result<Self> {
+        let path = path.as_ref();
+
+        let mut file = std::fs::File::open(&path)
+            .with_context(|| format!("failed to open file for decoding at {}", path.display()))?;
+
+        let mut bytes = Vec::new();
+        file.read_to_end(&mut bytes)
+            .with_context(|| format!("failed to read bytes of file {} after it was opened", path.display()))?;
+
+        dbg!(bytes.len());
+
+        let format = image::guess_format(&bytes)
+            .with_context(|| format!("failed to guess format of file - figure-second only handles PNG images"))?;
+
+        if !matches!(format, image::ImageFormat::Png) {
+            anyhow::bail!("image at {} is not PNG encoded (perhaps despite its extension) - detected format was {:?}", path.display(), format);
+        }
+
+        let mut base64_buf = String::with_capacity(bytes.len());
+        write!(base64_buf, "data:image/png;base64,").unwrap();
+
+        // encode the bytes as base64
+        base64::encode_config_buf(bytes, base64::STANDARD, &mut base64_buf);
+
+        dbg!(base64_buf.len());
+
+        Ok(
+            Self {
+                base64_bytes: base64_buf.into_bytes()
+            }
+        )
+    }
+}
+
+#[test]
+fn update_image() {
+    let element = r##"<image
+       width="0.84666669"
+       height="0.84666669"
+       preserveAspectRatio="none"
+       xlink:href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAoAAAAKCAIAAAACUFjqAAABhGlDQ1BJQ0MgcHJvZmlsZQAAKJF9
+kT1Iw0AcxV9bpSItIlYQcchQnSyIiuimVShChVArtOpgcukXNGlIUlwcBdeCgx+LVQcXZ10dXAVB
+8APE0clJ0UVK/F9SaBHjwXE/3t173L0D/PUyU82OMUDVLCOViAuZ7KoQfEUQ/ejFDMISM/U5UUzC
+c3zdw8fXuxjP8j735wgrOZMBPoF4lumGRbxBPLVp6Zz3iSOsKCnE58SjBl2Q+JHrsstvnAsO+3lm
+xEin5okjxEKhjeU2ZkVDJZ4kjiqqRvn+jMsK5y3OarnKmvfkLwzltJVlrtMcQgKLWIIIATKqKKEM
+CzFaNVJMpGg/7uEfdPwiuWRylcDIsYAKVEiOH/wPfndr5ifG3aRQHOh8se2PYSC4CzRqtv19bNuN
+EyDwDFxpLX+lDkx/kl5radEjoGcbuLhuafIecLkDDDzpkiE5UoCmP58H3s/om7JA3y3Qveb21tzH
+6QOQpq6SN8DBITBSoOx1j3d3tff275lmfz+OwHKyncxEXAAAAAlwSFlzAAAuIwAALiMBeKU/dgAA
+AAd0SU1FB+YHFRE6EhLaT/QAAAAZdEVYdENvbW1lbnQAQ3JlYXRlZCB3aXRoIEdJTVBXgQ4XAAAA
+FUlEQVQY02MMaBRnwA2YGPCCkSoNACS6APwkkpJNAAAAAElFTkSuQmCC
+"
+       id="image356"
+       x="36.497185"
+       y="76.012566" />
+"##;
+
+    let img_path = "./static/10x10_green.png";
+    let encoded_bytes = EncodedImage::from_path(img_path).unwrap();
+
+    let bytes = element.as_bytes();
+    let reader = std::io::BufReader::new(bytes);
+    let mut reader = quick_xml::Reader::from_reader(reader);
+    let mut buffer = Vec::new();
+
+    // for some reason the first item out is always useless
+    let _first_event = reader.read_event(&mut buffer).unwrap();
+    // the second element contains out BytesStart<_>
+    let event = reader.read_event(&mut buffer).unwrap();
+
+    let object = if let Event::Empty(event) = event {
+        super::parse::object(event.into_owned()).unwrap()
+    } else {
+        panic!("event was {event:?} was /not/ what we expected it to be");
+    };
+
+    let mut image = if let Object::Image(img) = object {
+        img
+    } else {
+        panic!("did not parse element as image, this should not happen");
+    };
+
+    image.update_image(encoded_bytes).unwrap();
+
+    dbg!(&image);
+
+    //panic!();
+}
+
+#[test]
+fn base64_encode_bytes() {
+    let img_path = "./static/10x10_green.png";
+    EncodedImage::from_path(img_path).unwrap();
 }

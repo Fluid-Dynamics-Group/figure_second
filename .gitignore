@@ -1,1 +1,4 @@
 **/*.kate-swp
+.venv
+*-output.svg
+**/__pycache__

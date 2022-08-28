@@ -1,5 +1,4 @@
 use figure_second::inkscape;
-use std::fs;
 use std::io::prelude::*;
 use std::io::BufReader;
 use std::io::BufWriter;
@@ -14,8 +13,6 @@ fn main() {
 
     let reader = std::fs::File::open(&path).unwrap();
     let buf = BufReader::new(reader);
-
-    //let out: inkscape::Svg  = quick_xml::de::from_reader(&mut buf).unwrap();
 
     let mut buffer = Vec::new();
     let mut out = inkscape::Inkscape::parse_svg(buf, &mut buffer).unwrap();

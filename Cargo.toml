@@ -1,7 +1,11 @@
 [package]
-name = "figure-second"
+name = "figure_second"
 version = "0.1.0"
 edition = "2021"
+
+[lib]
+name = "figure_second"
+crate-type = ["cdylib", "rlib"]
 
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
@@ -10,7 +14,6 @@ anyhow = "1.0.62"
 base64 = "0.13.0"
 
 [dependencies.quick-xml]
-image = "0.24.3"
 version = "0.23.0"
 
 [dependencies.image]
@@ -20,8 +23,12 @@ default_features = false
 [dependencies.pyo3]
 version = "0.17.0"
 optional = true
+features = ["extension-module"]
 #default_features = false
 
 [features]
-default = []
+default = ["python"]
 python = ["pyo3"]
+
+#[package.metadata.maturin]
+#python-source = "figure_second"

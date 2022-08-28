@@ -20,8 +20,7 @@ pub(crate) fn leading_events<R: BufRead>(
         if let Event::Start(element) = event {
             if element.name() == b"g" {
                 return Ok((out, Some(element)));
-            }
-            else {
+            } else {
                 out.push(Event::Start(element));
             }
         } else {

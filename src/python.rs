@@ -1,49 +1,99 @@
 use crate::inkscape;
 
-use std::path::PathBuf;
-use std::path::Path;
+use pyo3::exceptions::PyValueError;
+use pyo3::prelude::*;
+
+use anyhow::Context;
+use anyhow::Result;
 use std::collections::HashMap;
 use std::io::BufReader;
 use std::io::BufWriter;
-use anyhow::Result;
-use anyhow::Context;
+use std::path::Path;
+use std::path::PathBuf;
 
-struct Updater {
+#[pyclass]
+pub struct Updater {
     base_file: PathBuf,
     output_file: PathBuf,
 }
 
+#[pymethods]
 impl Updater {
-    fn new(base_file: PathBuf, output_file:PathBuf) -> Self {
+    #[new]
+    pub fn new(base_file: PathBuf, output_file: PathBuf) -> Self {
         Self {
-            base_file, output_file
+            base_file,
+            output_file,
         }
     }
 
     /// show all available ids of `Rectangle` and `Image` types in the inkscape file
-    fn ids(&self) -> Result<Vec<String>> {
-        let inkscape = read_inkscape(&self.base_file)?;
+    pub fn ids(&self) -> PyResult<Vec<String>> {
+        let inkscape =
+            read_inkscape(&self.base_file).map_err(|e| PyValueError::new_err(e.to_string()))?;
         Ok(inkscape.ids().map(Into::into).collect::<Vec<String>>())
     }
 
-    fn update(&self, map: HashMap<String, PathBuf>) -> Result<()> {
-        let mut inkscape = read_inkscape(&self.base_file)?;
+    pub fn update(&self, map: HashMap<String, PathBuf>) -> PyResult<()> {
+        let mut inkscape =
+            read_inkscape(&self.base_file).map_err(|e| PyValueError::new_err(e.to_string()))?;
 
-        for (k,v) in map {
+        for (k, v) in map {
             let base64_encoding = inkscape::EncodedImage::from_path(&v)
-                .with_context(|| format!("failed to encode to BASE64 for id `{k}`"))?;
+                .with_context(|| format!("failed to encode to BASE64 for id `{k}`"))
+                .map_err(|e| PyValueError::new_err(e.to_string()))?;
 
-            inkscape.id_to_image(&k,base64_encoding)
-                .with_context(|| format!("failed to update inkscape structure for id `{k}`"))?;
+            inkscape
+                .id_to_image(&k, base64_encoding)
+                .with_context(|| format!("failed to update inkscape structure for id `{k}`"))
+                .map_err(|e| PyValueError::new_err(e.to_string()))?;
         }
 
         // write the updated inkscape file to to `self.output_file`
         let writer = std::fs::File::create(&self.output_file)
-            .with_context(|| format!("failed to create output inkscape file at {}", self.output_file.display()))?;
+            .with_context(|| {
+                format!(
+                    "failed to create output inkscape file at {}",
+                    self.output_file.display()
+                )
+            })
+            .map_err(|e| PyValueError::new_err(e.to_string()))?;
+
         let write_buf = BufWriter::new(writer);
         inkscape.write_svg(write_buf).unwrap();
 
         Ok(())
+    }
+
+    pub fn dimensions(&self, id: String) -> PyResult<Dimensions> {
+        let mut inkscape =
+            read_inkscape(&self.base_file).map_err(|e| PyValueError::new_err(e.to_string()))?;
+
+        let (width, height) = inkscape
+            .dimensions(&id)
+            .map_err(|e| PyValueError::new_err(e.to_string()))?;
+
+        Ok(Dimensions {
+            width: width.round() as usize,
+            height: height.round() as usize,
+        })
+    }
+}
+
+#[pyclass]
+pub struct Dimensions {
+    width: usize,
+    height: usize,
+}
+
+#[pymethods]
+impl Dimensions {
+    fn width(&self) -> usize {
+        self.width
+    }
+
+    fn height(&self) -> usize {
+        self.height
     }
 }
 

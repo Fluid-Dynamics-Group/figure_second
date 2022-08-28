@@ -39,18 +39,20 @@ impl Rectangle {
 
         let img_data = quick_xml::events::attributes::Attribute {
             key: b"xlink:href",
-            value: base64_encoded.as_slice().into()
+            value: base64_encoded.as_slice().into(),
         };
 
-        let new_atts = self.element.attributes()
+        let new_atts = self
+            .element
+            .attributes()
             .filter_map(Result::ok)
             // remove attributes from the iterator that are used for rectangular elements
             .filter(|rect_attribute| rect_attribute.key != b"style")
             // add on the image data
             .chain(std::iter::once(img_data));
 
-        // update the element, store it in the current element 
-        // TODO: this updates the underlying element away from `Rectangle`, which may be confusing 
+        // update the element, store it in the current element
+        // TODO: this updates the underlying element away from `Rectangle`, which may be confusing
         // in the future
         let new_element = new_element.with_attributes(new_atts);
         self.element = new_element;
@@ -62,7 +64,7 @@ impl Rectangle {
     pub(crate) fn from_ident(ident: Identifiers) -> Self {
         Self {
             ident,
-            element: BytesStart::owned_name(b"rect".to_vec())
+            element: BytesStart::owned_name(b"rect".to_vec()),
         }
     }
 }
@@ -83,18 +85,20 @@ impl Image {
 
         let img_data = quick_xml::events::attributes::Attribute {
             key: b"xlink:href",
-            value: base64_encoded.as_slice().into()
+            value: base64_encoded.as_slice().into(),
         };
 
-        let new_atts = self.element.attributes()
+        let new_atts = self
+            .element
+            .attributes()
             .filter_map(Result::ok)
             // remove attributes from the iterator that are used for image elements
             .filter(|rect_attribute| rect_attribute.key != b"xlink:href")
             // add on the image data
             .chain(std::iter::once(img_data));
 
-        // update the element, store it in the current element 
-        // TODO: this updates the underlying element away from `Rectangle`, which may be confusing 
+        // update the element, store it in the current element
+        // TODO: this updates the underlying element away from `Rectangle`, which may be confusing
         // in the future
         let new_element = new_element.with_attributes(new_atts);
         self.element = new_element;
@@ -106,7 +110,7 @@ impl Image {
     pub(crate) fn from_ident(ident: Identifiers) -> Self {
         Self {
             ident,
-            element: BytesStart::owned_name(b"image".to_vec())
+            element: BytesStart::owned_name(b"image".to_vec()),
         }
     }
 }
@@ -173,7 +177,7 @@ impl Identifiers {
 
 pub struct EncodedImage {
     // base64 encoded bytes with Inkscape mime type prefixed
-    base64_bytes: Vec<u8>
+    base64_bytes: Vec<u8>,
 }
 
 impl EncodedImage {
@@ -188,11 +192,16 @@ impl EncodedImage {
             .with_context(|| format!("failed to open file for decoding at {}", path.display()))?;
 
         let mut bytes = Vec::new();
-        file.read_to_end(&mut bytes)
-            .with_context(|| format!("failed to read bytes of file {} after it was opened", path.display()))?;
+        file.read_to_end(&mut bytes).with_context(|| {
+            format!(
+                "failed to read bytes of file {} after it was opened",
+                path.display()
+            )
+        })?;
 
-        let format = image::guess_format(&bytes)
-            .with_context(|| format!("failed to guess format of file - figure-second only handles PNG images"))?;
+        let format = image::guess_format(&bytes).with_context(|| {
+            format!("failed to guess format of file - figure-second only handles PNG images")
+        })?;
 
         if !matches!(format, image::ImageFormat::Png) {
             anyhow::bail!("image at {} is not PNG encoded (perhaps despite its extension) - detected format was {:?}", path.display(), format);
@@ -206,11 +215,9 @@ impl EncodedImage {
         // encode the bytes as base64
         base64::encode_config_buf(bytes, base64::STANDARD, &mut base64_buf);
 
-        Ok(
-            Self {
-                base64_bytes: base64_buf.into_bytes()
-            }
-        )
+        Ok(Self {
+            base64_bytes: base64_buf.into_bytes(),
+        })
     }
 }
 

@@ -35,37 +35,39 @@ impl Group {
     }
 }
 
-
-
 /// Export an [`Inkscape`] object to a file
 impl Inkscape {
     pub fn write_svg<'a, W: Write>(self, writer: W) -> Result<()> {
         let mut writer = quick_xml::Writer::new(writer);
 
         for event in self.leading_events {
-            writer.write_event(&event)
+            writer
+                .write_event(&event)
                 .with_context(|| format!("failed to write a leading event: {:?}", event))?;
         }
 
         for layer in self.layers {
-            writer.write_event(&layer.header)
-                .with_context(|| format!("failed to write header for layer : {:?}", layer.header))?;
+            writer.write_event(&layer.header).with_context(|| {
+                format!("failed to write header for layer : {:?}", layer.header)
+            })?;
 
             for object in layer.content {
                 let event = object.into_event();
-                writer.write_event(&event)
-                    .with_context(|| format!("failed to write inner object for layer : {:?}", event))?;
+                writer.write_event(&event).with_context(|| {
+                    format!("failed to write inner object for layer : {:?}", event)
+                })?;
             }
 
-            writer.write_event(&layer.footer)
-                .with_context(|| format!("failed to write footer for layer : {:?}", layer.footer))?;
+            writer.write_event(&layer.footer).with_context(|| {
+                format!("failed to write footer for layer : {:?}", layer.footer)
+            })?;
         }
 
         for event in self.trailing_events {
-            writer.write_event(&event)
+            writer
+                .write_event(&event)
                 .with_context(|| format!("failed to write a trailing event: {:?}", event))?;
         }
-
 
         Ok(())
     }
@@ -106,27 +108,47 @@ impl Inkscape {
     }
 
     pub fn id_to_image(&mut self, id: &str, image: EncodedImage) -> Result<()> {
-
         for layer in &mut self.layers {
             for object in layer.content.iter_mut() {
                 match object {
                     object::Object::Rectangle(rect) => {
                         if rect.ident.id == id {
                             rect.set_image(image)?;
-                            
-                            return Ok(())
+
+                            return Ok(());
                         }
                     }
                     object::Object::Image(img) => {
                         if img.ident.id == id {
                             img.update_image(image)?;
 
-                            return Ok(())
+                            return Ok(());
                         }
                     }
-                    object::Object::Other(_) => (), 
+                    object::Object::Other(_) => (),
                 };
+            }
+        }
 
+        anyhow::bail!("id is not contained in the document");
+    }
+
+    pub fn dimensions(&mut self, id: &str) -> Result<(f64, f64)> {
+        for layer in &self.layers {
+            for object in &layer.content {
+                match object {
+                    object::Object::Rectangle(rect) => {
+                        if rect.ident.id == id {
+                            return Ok((rect.ident.width, rect.ident.height));
+                        }
+                    }
+                    object::Object::Image(img) => {
+                        if img.ident.id == id {
+                            return Ok((img.ident.width, img.ident.height));
+                        }
+                    }
+                    object::Object::Other(_) => (),
+                };
             }
         }
 
@@ -141,20 +163,20 @@ impl Inkscape {
 pub(crate) struct IdIterator<'a> {
     curr_group_idx: usize,
     curr_group_object_idx: usize,
-    groups: &'a [Group]
+    groups: &'a [Group],
 }
 
-impl <'a> IdIterator <'a>  {
-    fn new(groups: &'a [Group]) -> IdIterator<'a>  {
+impl<'a> IdIterator<'a> {
+    fn new(groups: &'a [Group]) -> IdIterator<'a> {
         Self {
             groups,
             curr_group_idx: 0,
-            curr_group_object_idx: 0
+            curr_group_object_idx: 0,
         }
     }
 }
 
-impl <'a> Iterator for IdIterator<'a>  {
+impl<'a> Iterator for IdIterator<'a> {
     type Item = &'a str;
 
     fn next(&mut self) -> Option<Self::Item> {
@@ -162,7 +184,7 @@ impl <'a> Iterator for IdIterator<'a>  {
             grp
         } else {
             // we have exhaused all the groups we can
-            return None
+            return None;
         };
 
         if let Some(group_object) = group.content.get(self.curr_group_object_idx) {
@@ -171,17 +193,17 @@ impl <'a> Iterator for IdIterator<'a>  {
             match group_object {
                 object::Object::Rectangle(rect) => {
                     self.curr_group_object_idx += 1;
-                    return Some(&rect.ident.id)
+                    return Some(&rect.ident.id);
                 }
                 object::Object::Image(image) => {
                     self.curr_group_object_idx += 1;
-                    return Some(&image.ident.id)
+                    return Some(&image.ident.id);
                 }
                 object::Object::Other(_) => {
                     // we HAVE a valid object, but since its not an object we normally care
                     // about, we have not parsed the identifiers for it
                     self.curr_group_object_idx += 1;
-                    return self.next()
+                    return self.next();
                 }
             }
         } else {
@@ -189,15 +211,14 @@ impl <'a> Iterator for IdIterator<'a>  {
             // group and return anything from there
             self.curr_group_idx += 1;
             self.curr_group_object_idx = 0;
-            return self.next()
+            return self.next();
         }
     }
 }
 
-
 #[test]
 fn id_iterator() {
-    use object::{Object, Image, Rectangle, Identifiers};
+    use object::{Identifiers, Image, Object, Rectangle};
     let groups = vec![
         Group::eof_group_test(vec![]),
         Group::eof_group_test(vec![
@@ -208,8 +229,12 @@ fn id_iterator() {
         Group::eof_group_test(vec![]),
         Group::eof_group_test(vec![
             Object::Rectangle(Rectangle::from_ident(Identifiers::zeros_with_id("4"))),
-            Object::Other(Event::Empty(BytesStart::owned_name(b"doesnt_matter".to_vec()))),
-            Object::Other(Event::Empty(BytesStart::owned_name(b"doesnt_matter2".to_vec()))),
+            Object::Other(Event::Empty(BytesStart::owned_name(
+                b"doesnt_matter".to_vec(),
+            ))),
+            Object::Other(Event::Empty(BytesStart::owned_name(
+                b"doesnt_matter2".to_vec(),
+            ))),
             Object::Rectangle(Rectangle::from_ident(Identifiers::zeros_with_id("5"))),
         ]),
         Group::eof_group_test(vec![]),

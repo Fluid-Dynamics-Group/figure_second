@@ -11,10 +11,8 @@ DPI = 100
 
 def plot_xy_fig(x,y, inkscape_id: str) -> Figure:
 
-    # fetch the dimensions of the ink
-
+    # fetch the dimensions of the inkscape file
     height = 4.
-    
     dims = up.relative_dimensions(inkscape_id, height)
 
     fig = Figure(figsize=dims, dpi = DPI)

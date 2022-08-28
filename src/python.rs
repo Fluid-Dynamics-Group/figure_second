@@ -74,25 +74,33 @@ impl Updater {
             .map_err(|e| PyValueError::new_err(e.to_string()))?;
 
         Ok(Dimensions {
-            width: width.round() as usize,
-            height: height.round() as usize,
+            width,
+            height,
         })
+    }
+
+    pub fn relative_dimensions(&self, id: String, height: f64) -> PyResult<(f64, f64)> {
+        let dims = self.dimensions(id)?;
+
+        let width = height * dims.width / dims.height;
+
+        return Ok((width, height))
     }
 }
 
 #[pyclass]
 pub struct Dimensions {
-    width: usize,
-    height: usize,
+    width: f64,
+    height: f64,
 }
 
 #[pymethods]
 impl Dimensions {
-    fn width(&self) -> usize {
+    fn width(&self) -> f64 {
         self.width
     }
 
-    fn height(&self) -> usize {
+    fn height(&self) -> f64 {
         self.height
     }
 }

@@ -15,7 +15,7 @@ def plot_xy_fig(x,y, inkscape_id: str) -> Figure:
 
     height = 4.
     
-    dims = up.relative_dimensions(inkscape_id, height);
+    dims = up.relative_dimensions(inkscape_id, height)
 
     fig = Figure(figsize=dims, dpi = DPI)
     ax = fig.subplots()

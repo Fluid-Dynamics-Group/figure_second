@@ -2,4 +2,4 @@
 .venv
 *-output.svg
 **/__pycache__
-docs/build
+python/docs/build

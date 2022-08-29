@@ -2,3 +2,6 @@ name = "figure_second"
 uuid = "48c351b1-a4ff-4eed-92df-f65e96ed95c1"
 authors = ["Brooks <brooks@karlik.org>"]
 version = "0.1.0"
+
+[deps]
+PyCall = "438e738f-606a-5dbb-bf0a-cddfbfd45ab0"

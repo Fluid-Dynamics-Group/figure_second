@@ -30,5 +30,5 @@ features = ["extension-module"]
 default = ["python"]
 python = ["pyo3"]
 
-#[package.metadata.maturin]
-#python-source = "figure_second"
+[package.metadata.maturin]
+python-source = "python"

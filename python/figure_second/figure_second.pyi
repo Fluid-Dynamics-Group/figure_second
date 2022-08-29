@@ -2,9 +2,10 @@ import os
 from typing import Union
 from typing import Dict 
 from typing import List
+from typing import Optional
 
 class Updater():
-    def __new__(cls, base_file: Union[os.PathLike, str], output_file: Union[os.PathLike, str]): ...
+    def __new__(cls, base_file: Union[os.PathLike, str], output_file: Optional[Union[os.PathLike, str]] = None): ...
 
     def ids(self) -> List[str]: ...
 

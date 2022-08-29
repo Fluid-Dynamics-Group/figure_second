@@ -21,7 +21,7 @@ version = "0.24.3"
 default_features = false
 
 [dependencies.pyo3]
-version = "0.17.0"
+version = "0.17.1"
 optional = true
 features = ["extension-module"]
 #default_features = false

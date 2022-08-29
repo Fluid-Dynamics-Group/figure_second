@@ -20,6 +20,13 @@ module python_bindings
         return Updater(class_initialization)
     end
 
+    function updater(base_path::String)::Updater
+        figure_second = pyimport("figure_second")
+        class_initialization = figure_second.Updater(base_path)
+
+        return Updater(class_initialization)
+    end
+
     function ids(updater::Updater)::Vector{String}
         return updater.updater.ids()
     end
@@ -38,5 +45,11 @@ module python_bindings
         (width, height) = updater.updater.relative_dimensions(id, height)
 
         return (width, height)
+    end
+
+    function relative_dimensions(updater::Updater, id::String, height::Int)::Tuple{Int, Int}
+        (width, height) = updater.updater.relative_dimensions(id, Float64(height))
+
+        return (Int(round(width)), Int(round(height)))
     end
 end

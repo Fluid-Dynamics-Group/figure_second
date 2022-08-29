@@ -1,10 +1,10 @@
 API Reference
 =============
 
-.. class:: Updater(base_file: Union[str, os.PathLike], output_file: Union[str, os.PathLike)
+.. class:: Updater(base_file: Union[str, os.PathLike], output_file: Optional[Union[str, os.PathLike]] = None)
 
    :param base_file: a path to the template file that contains rectangles / images with their respective XML ids set
-   :param output_file: the file that will be generated from ``base_file`` with figures substituted in
+   :param output_file: the file that will be generated from ``base_file`` with figures substituted in. If this is none, ``base_file`` will be mutated in palce.
    :return: ``Updater`` class
 
     .. function:: Updater.ids(self) -> List[str]

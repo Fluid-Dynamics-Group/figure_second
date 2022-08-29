@@ -4,4 +4,5 @@ authors = ["Brooks <brooks@karlik.org>"]
 version = "0.1.0"
 
 [deps]
+Makie = "ee78f7c6-11fb-53f2-987a-cfe4a2b5a57a"
 PyCall = "438e738f-606a-5dbb-bf0a-cddfbfd45ab0"

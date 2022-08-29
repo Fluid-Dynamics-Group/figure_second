@@ -14,13 +14,16 @@ use std::path::PathBuf;
 #[pyclass]
 pub struct Updater {
     base_file: PathBuf,
-    output_file: PathBuf,
+    output_file: Option<PathBuf>,
 }
 
 #[pymethods]
 impl Updater {
     #[new]
-    pub fn new(base_file: PathBuf, output_file: PathBuf) -> Self {
+    #[args(
+        output_file="None"
+    )]
+    pub fn new(base_file: PathBuf, output_file: Option<PathBuf>) -> Self {
         Self {
             base_file,
             output_file,
@@ -49,12 +52,14 @@ impl Updater {
                 .map_err(|e| PyValueError::new_err(e.to_string()))?;
         }
 
+        let output_file = self.output_file.as_ref().unwrap_or(&self.base_file);
+
         // write the updated inkscape file to to `self.output_file`
-        let writer = std::fs::File::create(&self.output_file)
+        let writer = std::fs::File::create(&output_file)
             .with_context(|| {
                 format!(
                     "failed to create output inkscape file at {}",
-                    self.output_file.display()
+                    output_file.display()
                 )
             })
             .map_err(|e| PyValueError::new_err(e.to_string()))?;

@@ -3,3 +3,4 @@
 *-output.svg
 **/__pycache__
 python/docs/build
+julia/figure_second/docs/build/

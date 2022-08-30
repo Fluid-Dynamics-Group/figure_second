@@ -8,7 +8,7 @@ using InteractiveUtils
 using Pkg
 
 # ╔═╡ e610e7f3-612c-43cb-b417-398cd310d119
-Pkg.activate("../../figure_second")
+Pkg.activate("../../../figure_second")
 
 # ╔═╡ b8b3d7de-273f-11ed-3c47-cd1ab0eba7d9
 using Revise

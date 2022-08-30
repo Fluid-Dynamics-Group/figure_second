@@ -1,0 +1,54 @@
+name: Github Pages
+
+on:
+  push:
+    branches:
+      - master
+  pull_request:
+
+jobs:
+  deploy:
+    runs-on: ubuntu-20.04
+    concurrency:
+      group: ${{ github.workflow }}-${{ github.ref }}
+    steps:
+      - uses: actions/setup-python@v2
+        with:
+          python-version: 3.9
+          architecture: x64
+      - uses: actions/checkout@v2
+      # first create a dir we will move everything into later
+      - name: create export directory
+        run: |
+          mkdir public
+      #
+      # building python docs w/ sphinx
+      #
+      - name: install maturin and sphinx
+        run: |
+          pip3 install maturin sphinx sphinx_rtd_theme
+      - name: verify project compiles
+        run: |
+          cargo build
+          rustc --version
+          maturin --version
+      - name: build sphinx docs
+        run: |
+          ./update_python_version.sh
+          maturin build --sdist
+          pip3 install .
+          cd python/docs
+          make html
+      - name: copy sphinx docs into book directory
+        run: |
+          mv ./python/docs/build/html/ ./public/python
+      #
+      # building julia docs w/ Documenter
+      #
+      - name: check julia
+        julia --version
+      - name: Deploy
+          uses: peaceiris/actions-gh-pages@v3
+          with:
+            github_token: ${{ secrets.GITHUB_TOKEN }}
+            publish_dir: ./public

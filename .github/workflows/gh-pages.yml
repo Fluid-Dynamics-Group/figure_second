@@ -22,6 +22,22 @@ jobs:
         run: |
           mkdir public
       #
+      # building jdocs w/ sphinx
+      #
+      - name: check julia
+        run: |
+          julia --version
+      - name: add julia packages
+        run: |
+          julia -e 'using Pkg; Pkg.add("Documenter"); Pkg.add("Makie"); Pkg.add("PyCall")'
+      - name: build julia docs
+        run: |
+          cd ./julia/figure_second/docs
+          julia make.jl
+      - name: move julia docs to public folder for export
+        run: |
+          mv ./julia/figure_second/docs/build ./public/julia
+      #
       # building python docs w/ sphinx
       #
       - name: install maturin and sphinx
@@ -42,13 +58,8 @@ jobs:
       - name: copy sphinx docs into book directory
         run: |
           mv ./python/docs/build/html/ ./public/python
-      #
-      # building julia docs w/ Documenter
-      #
-      - name: check julia
-        julia --version
       - name: Deploy
-          uses: peaceiris/actions-gh-pages@v3
-          with:
-            github_token: ${{ secrets.GITHUB_TOKEN }}
-            publish_dir: ./public
+        uses: peaceiris/actions-gh-pages@v3
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./public

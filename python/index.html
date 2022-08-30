@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>figure_second documentation &mdash; figure_second  documentation</title>
+      <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+        <script src="_static/jquery.js"></script>
+        <script src="_static/underscore.js"></script>
+        <script src="_static/_sphinx_javascript_frameworks_compat.js"></script>
+        <script src="_static/doctools.js"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="API Reference" href="api.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+            <a href="#" class="icon icon-home"> figure_second
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul>
+<li class="toctree-l1"><a class="reference internal" href="api.html">API Reference</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="#">figure_second</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="#" class="icon icon-home"></a> &raquo;</li>
+      <li>figure_second documentation</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="_sources/index.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="figure-second-documentation">
+<h1>figure_second documentation<a class="headerlink" href="#figure-second-documentation" title="Permalink to this heading"></a></h1>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="api.html">API Reference</a></li>
+</ul>
+</div>
+</section>
+<section id="installing">
+<h1>Installing<a class="headerlink" href="#installing" title="Permalink to this heading"></a></h1>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>pip3 install figure_second
+</pre></div>
+</div>
+</section>
+<section id="workflow">
+<h1>Workflow<a class="headerlink" href="#workflow" title="Permalink to this heading"></a></h1>
+<p>Starting with an empty document in inkscape:</p>
+<img alt="_images/empty_document.png" src="_images/empty_document.png" />
+<p>draw some rectangles with the <code class="docutils literal notranslate"><span class="pre">Create</span> <span class="pre">Rectangles</span> <span class="pre">and</span> <span class="pre">Squares</span></code> Tool (R):</p>
+<img alt="_images/rectangles_drawn.png" src="_images/rectangles_drawn.png" />
+<p>right click on one rectangle and select <code class="docutils literal notranslate"><span class="pre">Object</span> <span class="pre">Properties...</span></code>. This will bring a pane up like this:</p>
+<img alt="_images/object_pane.png" src="_images/object_pane.png" />
+<p>set the <code class="docutils literal notranslate"><span class="pre">ID</span></code> field to a memorable name, and click <code class="docutils literal notranslate"><span class="pre">Set</span></code> at the bottom of the panel. For this example,
+the three rectangles are named <code class="docutils literal notranslate"><span class="pre">A</span></code> <code class="docutils literal notranslate"><span class="pre">B</span></code> and <code class="docutils literal notranslate"><span class="pre">C</span></code>. Save the inkscape file to disk - I chose the name <code class="docutils literal notranslate"><span class="pre">simple.svg</span></code>.</p>
+<p>The generated xml for <code class="docutils literal notranslate"><span class="pre">simple.svg</span></code> will contain something like this for the three rectangles:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">&lt;</span><span class="n">g</span>
+    <span class="n">inkscape</span><span class="p">:</span><span class="n">label</span><span class="o">=</span><span class="s2">&quot;Layer 1&quot;</span>
+    <span class="n">inkscape</span><span class="p">:</span><span class="n">groupmode</span><span class="o">=</span><span class="s2">&quot;layer&quot;</span>
+    <span class="nb">id</span><span class="o">=</span><span class="s2">&quot;layer1&quot;</span><span class="o">&gt;</span>
+    <span class="o">&lt;</span><span class="n">rect</span>
+        <span class="n">style</span><span class="o">=</span><span class="s2">&quot;fill:#ff0000;fill-opacity:1;stroke-width:0.31918&quot;</span>
+        <span class="nb">id</span><span class="o">=</span><span class="s2">&quot;A&quot;</span>
+        <span class="n">width</span><span class="o">=</span><span class="s2">&quot;41.506653&quot;</span>
+        <span class="n">height</span><span class="o">=</span><span class="s2">&quot;53.083206&quot;</span>
+        <span class="n">x</span><span class="o">=</span><span class="s2">&quot;29.557634&quot;</span>
+        <span class="n">y</span><span class="o">=</span><span class="s2">&quot;31.906368&quot;</span> <span class="o">/&gt;</span>
+    <span class="o">&lt;</span><span class="n">rect</span>
+        <span class="n">style</span><span class="o">=</span><span class="s2">&quot;fill:#ff0000;fill-opacity:1;stroke-width:0.419872&quot;</span>
+        <span class="nb">id</span><span class="o">=</span><span class="s2">&quot;B&quot;</span>
+        <span class="n">width</span><span class="o">=</span><span class="s2">&quot;78.799866&quot;</span>
+        <span class="n">height</span><span class="o">=</span><span class="s2">&quot;53.08321&quot;</span>
+        <span class="n">x</span><span class="o">=</span><span class="s2">&quot;75.366898&quot;</span>
+        <span class="n">y</span><span class="o">=</span><span class="s2">&quot;31.906368&quot;</span> <span class="o">/&gt;</span>
+    <span class="o">&lt;</span><span class="n">rect</span>
+        <span class="n">style</span><span class="o">=</span><span class="s2">&quot;fill:#ff0000;fill-opacity:1;stroke-width:0.372622&quot;</span>
+        <span class="nb">id</span><span class="o">=</span><span class="s2">&quot;C&quot;</span>
+        <span class="n">width</span><span class="o">=</span><span class="s2">&quot;124.60913&quot;</span>
+        <span class="n">height</span><span class="o">=</span><span class="s2">&quot;55.065285&quot;</span>
+        <span class="n">x</span><span class="o">=</span><span class="s2">&quot;29.557634&quot;</span>
+        <span class="n">y</span><span class="o">=</span><span class="s2">&quot;89.596893&quot;</span> <span class="o">/&gt;</span>
+<span class="o">&lt;/</span><span class="n">g</span><span class="o">&gt;</span>
+</pre></div>
+</div>
+<p>Here we can see that the values we selected for each <code class="docutils literal notranslate"><span class="pre">ID</span></code> field have been stored in the <code class="docutils literal notranslate"><span class="pre">.svg</span></code> file.
+This is important - <code class="docutils literal notranslate"><span class="pre">figure_second</span></code> used these identifiers to find the correct element in the file to update
+to your figures, as well as supplying you with its dimensions.</p>
+<p>Lets now move to python. Start by initalizing an <a class="reference internal" href="api.html#Updater" title="Updater"><code class="xref py py-class docutils literal notranslate"><span class="pre">Updater</span></code></a> object by specifying the path to your template file
+of rectangles, and an output path:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">figure_second</span>
+<span class="n">up</span> <span class="o">=</span> <span class="n">figure_second</span><span class="o">.</span><span class="n">Updater</span><span class="p">(</span><span class="s2">&quot;./simple.svg&quot;</span><span class="p">,</span> <span class="s2">&quot;./simple-output.svg&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>next we will create some sample data to plot on the axes:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">x</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">2</span><span class="o">*</span><span class="n">pi</span><span class="p">,</span> <span class="mi">100</span><span class="p">)</span>
+
+<span class="n">y_A</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+<span class="n">y_B</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+<span class="n">y_C</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>then create some figures for each one. Lets use a helper function to reduce code repetiton:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">plot_xy_fig</span><span class="p">(</span><span class="n">x</span><span class="p">,</span><span class="n">y</span><span class="p">,</span> <span class="n">inkscape_id</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Figure</span><span class="p">:</span>
+
+    <span class="n">fig</span> <span class="o">=</span> <span class="n">Figure</span><span class="p">()</span>
+    <span class="n">ax</span> <span class="o">=</span> <span class="n">fig</span><span class="o">.</span><span class="n">subplots</span><span class="p">()</span>
+
+    <span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">x</span><span class="p">,</span><span class="n">y</span><span class="p">)</span>
+
+    <span class="c1"># title each plot with its inkscape id</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="n">inkscape_id</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">fig</span>
+</pre></div>
+</div>
+<p>Then, lets create a python dictionary that maps the inkscape IDs we have chosen
+to matplotlib <code class="docutils literal notranslate"><span class="pre">Figure</span></code> objects:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">mapping</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s2">&quot;A&quot;</span><span class="p">:</span> <span class="n">plot_xy_fig</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y_A</span><span class="p">,</span> <span class="s2">&quot;A&quot;</span><span class="p">),</span>
+    <span class="s2">&quot;B&quot;</span><span class="p">:</span> <span class="n">plot_xy_fig</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y_B</span><span class="p">,</span> <span class="s2">&quot;B&quot;</span><span class="p">),</span>
+    <span class="s2">&quot;C&quot;</span><span class="p">:</span> <span class="n">plot_xy_fig</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y_C</span><span class="p">,</span> <span class="s2">&quot;C&quot;</span><span class="p">),</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>and plot the result with</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">figure_second</span><span class="o">.</span><span class="n">plot_figs</span><span class="p">(</span><span class="n">up</span><span class="p">,</span> <span class="n">mapping</span><span class="p">,</span> <span class="n">bbox_inches</span><span class="o">=</span><span class="s2">&quot;tight&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>If we go back to inkscape and open the newly generated <code class="docutils literal notranslate"><span class="pre">./simple-output.svg</span></code>, we will see something like this:</p>
+<img alt="_images/initial_output.png" src="_images/initial_output.png" />
+<p>Notice that, while <code class="docutils literal notranslate"><span class="pre">figure_second</span></code> has placed the plots in the inkscape svg, it has made no attempt to fix the aspect
+ratio problems that have arisen. <code class="docutils literal notranslate"><span class="pre">figure_second</span></code> only provides a minimal api to the underlying <code class="docutils literal notranslate"><span class="pre">svg</span></code> information,
+so its up to the user to fix this. Luckily, the <a class="reference internal" href="api.html#Updater.dimensions" title="Updater.dimensions"><code class="xref py py-func docutils literal notranslate"><span class="pre">Updater.dimensions()</span></code></a> method can provide data on what <code class="docutils literal notranslate"><span class="pre">width</span></code>
+and <code class="docutils literal notranslate"><span class="pre">height</span></code> attributes are detailed in the svg file.</p>
+<p>We can use <a class="reference internal" href="api.html#Updater.relative_dimensions" title="Updater.relative_dimensions"><code class="xref py py-func docutils literal notranslate"><span class="pre">Updater.relative_dimensions()</span></code></a> to calculate the dimensions in inches (matplotlib units) for a given
+desired figure height. This way, the width and height will preserve the original aspect ratio of the inkscape rectangles.</p>
+<p>Adjusting our <code class="docutils literal notranslate"><span class="pre">plot_xy_fig</span></code> function:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">plot_xy_fig</span><span class="p">(</span><span class="n">x</span><span class="p">,</span><span class="n">y</span><span class="p">,</span> <span class="n">inkscape_id</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Figure</span><span class="p">:</span>
+    <span class="c1"># height in inches of the figure</span>
+    <span class="n">height</span> <span class="o">=</span> <span class="mf">4.</span>
+
+    <span class="c1"># .relative_dimensions returns a tuple of (width, height) information</span>
+    <span class="c1"># that we can send directly to matplotlib</span>
+    <span class="n">dims</span> <span class="o">=</span> <span class="n">up</span><span class="o">.</span><span class="n">relative_dimensions</span><span class="p">(</span><span class="n">inkscape_id</span><span class="p">,</span> <span class="n">height</span><span class="p">)</span>
+
+    <span class="n">fig</span> <span class="o">=</span> <span class="n">Figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="n">dims</span><span class="p">)</span>
+
+    <span class="c1"># title each plot with its inkscape id</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="n">inkscape_id</span><span class="p">)</span>
+
+    <span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">x</span><span class="p">,</span><span class="n">y</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">fig</span>
+</pre></div>
+</div>
+<p>Running the code again, we dont actually need to close and reopen the file. Instead, go to <code class="docutils literal notranslate"><span class="pre">File</span> <span class="pre">&gt;</span> <span class="pre">Revert</span></code> to
+reload the svg automatically. The final result is (with also showing inkscape bounding boxes on the figures):</p>
+<img alt="_images/final_output.png" src="_images/final_output.png" />
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="api.html" class="btn btn-neutral float-right" title="API Reference" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2022, Brooks.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

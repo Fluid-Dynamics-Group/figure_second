@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>API Reference &mdash; figure_second  documentation</title>
+      <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+        <script src="_static/jquery.js"></script>
+        <script src="_static/underscore.js"></script>
+        <script src="_static/_sphinx_javascript_frameworks_compat.js"></script>
+        <script src="_static/doctools.js"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="prev" title="figure_second documentation" href="index.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+            <a href="index.html" class="icon icon-home"> figure_second
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul class="current">
+<li class="toctree-l1 current"><a class="current reference internal" href="#">API Reference</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">figure_second</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="index.html" class="icon icon-home"></a> &raquo;</li>
+      <li>API Reference</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="_sources/api.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="api-reference">
+<h1>API Reference<a class="headerlink" href="#api-reference" title="Permalink to this heading"></a></h1>
+<dl class="py class">
+<dt class="sig sig-object py" id="Updater">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">Updater</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">base_file</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Union</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">os.PathLike</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">output_file</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">Union</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">os.PathLike</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#Updater" title="Permalink to this definition"></a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>base_file</strong> – a path to the template file that contains rectangles / images with their respective XML ids set</p></li>
+<li><p><strong>output_file</strong> – the file that will be generated from <code class="docutils literal notranslate"><span class="pre">base_file</span></code> with figures substituted in. If this is none, <code class="docutils literal notranslate"><span class="pre">base_file</span></code> will be mutated in palce.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><p><code class="docutils literal notranslate"><span class="pre">Updater</span></code> class</p>
+<dl class="py function">
+<dt class="sig sig-object py" id="Updater.ids">
+<span class="sig-name descname"><span class="pre">ids</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span></span><a class="headerlink" href="#Updater.ids" title="Permalink to this definition"></a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>A list of available ids belonging to either <cite>rect</cite> or <cite>image</cite> objects in the inkscape <code class="docutils literal notranslate"><span class="pre">base_file</span></code> <code class="docutils literal notranslate"><span class="pre">.svg</span></code></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="Updater.update">
+<span class="sig-name descname"><span class="pre">update</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">map</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Union</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">os.PathList</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#Updater.update" title="Permalink to this definition"></a></dt>
+<dd><p>update the svg in <code class="docutils literal notranslate"><span class="pre">base_path</span></code> to the png images in the keys of <code class="docutils literal notranslate"><span class="pre">map</span></code>. All input images must be
+png encoded.
+Note that most of the time, you want <a class="reference internal" href="#plot_figs" title="plot_figs"><code class="xref py py-func docutils literal notranslate"><span class="pre">plot_figs()</span></code></a> to handle this in a simple manner.
+The resulting svg file will be stored at <code class="docutils literal notranslate"><span class="pre">output_file</span></code>.</p>
+<p>This function may be called more than once for the same <code class="docutils literal notranslate"><span class="pre">Updater</span></code> instance.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>map</strong> – A dictionary of valid XML ids keys and <code class="docutils literal notranslate"><span class="pre">.png</span></code> image path values.</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>None</p>
+</dd>
+</dl>
+<p>The id of the xml object must be valid. Ensure that it is present in the output of <code class="docutils literal notranslate"><span class="pre">Updater.ids()</span></code>.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="Updater.dimensions">
+<span class="sig-name descname"><span class="pre">dimensions</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">id</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">:class:`Dimensions`</span></span></span><a class="headerlink" href="#Updater.dimensions" title="Permalink to this definition"></a></dt>
+<dd><p>fetch the dimensions of the object in inkscape. Note that the output results
+are in inkscape units, but <code class="docutils literal notranslate"><span class="pre">matplotlib</span></code> figure dimensions are in inches.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>id</strong> – the XML object id whose dimensions we are parsing</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><a class="reference internal" href="#Dimensions" title="Dimensions"><code class="xref py py-class docutils literal notranslate"><span class="pre">Dimensions</span></code></a> object with width and height information</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="Updater.relative_dimensions">
+<span class="sig-name descname"><span class="pre">relative_dimensions</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">id</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">height</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">float</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">float</span><span class="p"><span class="pre">]</span></span></span></span><a class="headerlink" href="#Updater.relative_dimensions" title="Permalink to this definition"></a></dt>
+<dd><p>A helper method to calculate what width a matplotlib figure should be for a given height,
+given that you want to preserve the aspect ratio with the geometry from inkscape.</p>
+<p>This method simply solves a proportion:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">matplotlib</span> <span class="n">width</span>     <span class="n">matplotlib</span> <span class="n">height</span>
+<span class="o">----------------</span>  <span class="o">=</span>  <span class="o">-----------------</span>
+<span class="n">inkscape</span> <span class="n">width</span>       <span class="n">inkscape</span> <span class="n">height</span>
+</pre></div>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>height</strong> – the height of the figure (inches)</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>a tuple of <code class="docutils literal notranslate"><span class="pre">(width,</span> <span class="pre">height)</span></code>, ready to be passed into a matplotlib <code class="docutils literal notranslate"><span class="pre">Figure(figsize</span> <span class="pre">=</span> <span class="pre">_)</span></code> constructor</p>
+</dd>
+</dl>
+</dd></dl>
+
+</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="Dimensions">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">Dimensions</span></span><a class="headerlink" href="#Dimensions" title="Permalink to this definition"></a></dt>
+<dd><dl class="py function">
+<dt class="sig sig-object py" id="Dimensions.width">
+<span class="sig-name descname"><span class="pre">width</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">float</span></span></span><a class="headerlink" href="#Dimensions.width" title="Permalink to this definition"></a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>the width of the object (inkscape units)</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="Dimensions.height">
+<span class="sig-name descname"><span class="pre">height</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">float</span></span></span><a class="headerlink" href="#Dimensions.height" title="Permalink to this definition"></a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>the height of the object (inkscape units)</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="plot_figs">
+<span class="sig-name descname"><span class="pre">plot_figs</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">updater</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#Updater" title="Updater"><span class="pre">Updater</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">fig_map</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">matplotlib.figure.Figure</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#plot_figs" title="Permalink to this definition"></a></dt>
+<dd><p>Helper function to substitute all figures in the values of <code class="docutils literal notranslate"><span class="pre">fig_map</span></code> into the corresponding inkscape ids
+in <code class="docutils literal notranslate"><span class="pre">updater.base_path</span></code>.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>updater</strong> – an <a class="reference internal" href="#Updater" title="Updater"><code class="xref py py-class docutils literal notranslate"><span class="pre">Updater()</span></code></a> class</p></li>
+<li><p><strong>fig_map</strong> – a dictionary with values matplotlib <code class="docutils literal notranslate"><span class="pre">Figure</span></code> objects, and keys of inkscape ids</p></li>
+<li><p><strong>*args</strong> – passed into matplotlib <code class="docutils literal notranslate"><span class="pre">Figure.savefig</span></code></p></li>
+<li><p><strong>**kwargs</strong> – passed into matplotlib <code class="docutils literal notranslate"><span class="pre">Figure.savefig</span></code></p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="index.html" class="btn btn-neutral float-left" title="figure_second documentation" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2022, Brooks.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

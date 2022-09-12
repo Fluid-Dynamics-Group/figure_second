@@ -11,6 +11,7 @@ crate-type = ["cdylib", "rlib"]
 
 [dependencies]
 anyhow = "1.0.62"
+xshell = "0.2.2"
 
 
 [dependencies.inkscape]

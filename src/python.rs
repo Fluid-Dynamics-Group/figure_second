@@ -1,5 +1,6 @@
 use pyo3::exceptions::PyValueError;
 use pyo3::prelude::*;
+use std::fmt;
 
 use anyhow::Context;
 use anyhow::Result;
@@ -20,9 +21,7 @@ pub struct Updater {
 #[pymethods]
 impl Updater {
     #[new]
-    #[args(
-        output_file="None"
-    )]
+    #[args(output_file = "None")]
     pub fn new(base_file: PathBuf, output_file: Option<PathBuf>) -> Self {
         Self {
             base_file,
@@ -34,7 +33,24 @@ impl Updater {
     pub fn ids(&self) -> PyResult<Vec<String>> {
         let inkscape =
             read_inkscape(&self.base_file).map_err(|e| PyValueError::new_err(e.to_string()))?;
-        Ok(inkscape.object_ids().map(Into::into).collect::<Vec<String>>())
+
+        let layer_names = inkscape
+            .object_ids()
+            .map(Into::into)
+            .collect::<Vec<String>>();
+
+        Ok(layer_names)
+    }
+
+    /// show all available ids of `Rectangle` and `Image` types in the inkscape file
+    pub fn layer_names(&self) -> PyResult<Vec<String>> {
+        let inkscape =
+            read_inkscape(&self.base_file).map_err(|e| PyValueError::new_err(e.to_string()))?;
+        Ok(inkscape
+            .get_layers()
+            .iter()
+            .map(|layer| layer.name().to_string())
+            .collect())
     }
 
     pub fn update(&self, map: HashMap<String, PathBuf>) -> PyResult<()> {
@@ -54,9 +70,7 @@ impl Updater {
 
         let output_file = self.output_file.as_ref().unwrap_or(&self.base_file);
 
-        write_inkscape(&output_file, inkscape)
-            .map_err(|e| PyValueError::new_err(e.to_string()))?;
-
+        write_inkscape(&output_file, inkscape).map_err(|e| PyValueError::new_err(e.to_string()))?;
 
         Ok(())
     }
@@ -69,10 +83,7 @@ impl Updater {
             .dimensions(&id)
             .map_err(|e| PyValueError::new_err(e.to_string()))?;
 
-        Ok(Dimensions {
-            width,
-            height,
-        })
+        Ok(Dimensions { width, height })
     }
 
     pub fn relative_dimensions(&self, id: String, height: f64) -> PyResult<(f64, f64)> {
@@ -80,7 +91,7 @@ impl Updater {
 
         let width = height * dims.width / dims.height;
 
-        return Ok((width, height))
+        return Ok((width, height));
     }
 
     #[args(method = "VisibleMethod::Name")]
@@ -99,13 +110,13 @@ impl Updater {
 
             if let Some(layer) = matched_layer {
                 layer.set_hidden();
+            } else {
+                return Err(PyValueError::new_err(format!("layer {method} {name_or_id} was not found in the existing {method}s")));
             }
         }
 
-
         let output_file = self.output_file.as_ref().unwrap_or(&self.base_file);
-        write_inkscape(&output_file, inkscape)
-            .map_err(|e| PyValueError::new_err(e.to_string()))?;
+        write_inkscape(&output_file, inkscape).map_err(|e| PyValueError::new_err(e.to_string()))?;
 
         Ok(())
     }
@@ -126,13 +137,13 @@ impl Updater {
 
             if let Some(layer) = matched_layer {
                 layer.set_visible();
+            } else {
+                return Err(PyValueError::new_err(format!("layer {method} {name_or_id} was not found in the existing {method}s")));
             }
         }
 
-
         let output_file = self.output_file.as_ref().unwrap_or(&self.base_file);
-        write_inkscape(&output_file, inkscape)
-            .map_err(|e| PyValueError::new_err(e.to_string()))?;
+        write_inkscape(&output_file, inkscape).map_err(|e| PyValueError::new_err(e.to_string()))?;
 
         Ok(())
     }
@@ -147,8 +158,22 @@ impl Updater {
         }
 
         let output_file = self.output_file.as_ref().unwrap_or(&self.base_file);
-        write_inkscape(&output_file, inkscape)
-            .map_err(|e| PyValueError::new_err(e.to_string()))?;
+        write_inkscape(&output_file, inkscape).map_err(|e| PyValueError::new_err(e.to_string()))?;
+
+        Ok(())
+    }
+
+    /// set all layers to hidden
+    pub fn hide_all_layers(&self) -> PyResult<()> {
+        let mut inkscape =
+            read_inkscape(&self.base_file).map_err(|e| PyValueError::new_err(e.to_string()))?;
+
+        for layer in inkscape.get_layers_mut() {
+            layer.set_hidden();
+        }
+
+        let output_file = self.output_file.as_ref().unwrap_or(&self.base_file);
+        write_inkscape(&output_file, inkscape).map_err(|e| PyValueError::new_err(e.to_string()))?;
 
         Ok(())
     }
@@ -161,8 +186,7 @@ impl Updater {
     /// under the hood, this is simply a call to the `inkscape` command line utility
     #[args(dpi = 96)]
     pub fn to_png(&self, output_path: PathBuf, dpi: usize) -> PyResult<()> {
-        let sh = xshell::Shell::new()
-            .map_err(|e| PyValueError::new_err(e.to_string()))?;
+        let sh = xshell::Shell::new().map_err(|e| PyValueError::new_err(e.to_string()))?;
 
         let dpi = dpi.to_string();
 
@@ -170,7 +194,7 @@ impl Updater {
         let input = inkscape_input.display().to_string();
         let output = output_path.display().to_string();
 
-        xshell::cmd!(sh, "inkscape --without-gui {input} --export-dpi={dpi} -o {output}")
+        xshell::cmd!(sh, "inkscape {input} --export-dpi={dpi} -o {output}")
             .quiet()
             .run()
             .map_err(|e| PyValueError::new_err(e.to_string()))?;
@@ -183,7 +207,16 @@ impl Updater {
 #[derive(Clone, Eq, PartialEq)]
 pub enum VisibleMethod {
     Id,
-    Name
+    Name,
+}
+
+impl fmt::Display for VisibleMethod {
+    fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
+        match &self {
+            Self::Id => write!(f, "id"),
+            Self::Name => write!(f, "name")
+        }
+    }
 }
 
 #[pyclass]

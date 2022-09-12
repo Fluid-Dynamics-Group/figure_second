@@ -7,9 +7,15 @@ API Reference
    :param output_file: the file that will be generated from ``base_file`` with figures substituted in. If this is none, ``base_file`` will be mutated in palce.
    :return: ``Updater`` class
 
-    .. function:: Updater.ids(self) -> List[str]
+    .. function:: Updater.ids(self) -> list[str]
 
         :return: A list of available ids belonging to either `rect` or `image` objects in the inkscape ``base_file`` ``.svg``
+
+    .. function:: Updater.layer_names(self) -> list[str]
+
+        Parse all layer names in the document - useful for debugging behavior of hiding / showing layers
+
+        :return: A list of all layer names in the document
 
     .. function:: Updater.update(self, map: Dict[str, Union[str, os.PathList]])
 
@@ -50,14 +56,14 @@ API Reference
         :param height: the height of the figure (inches)
         :return: a tuple of ``(width, height)``, ready to be passed into a matplotlib ``Figure(figsize = _)`` constructor
 
-    .. function:: Updater.hide_layers(self, name_or_ids: List[str], method: VisibleMethod = VisibleMethod.Name)
+    .. function:: Updater.hide_layers(self, name_or_ids: list[str], method: VisibleMethod = VisibleMethod.Name)
         
         Hide a list of layers from visibility based on names or ids
 
         :param name_or_ids: a list of strings, containing layer names (default) or layer ids to hide
         :param method: enum value to determine if the list provided is of names or ids
 
-    .. function:: Updater.show_layers(self, name_or_ids: List[str], method: VisibleMethod = VisibleMethod.Name)
+    .. function:: Updater.show_layers(self, name_or_ids: list[str], method: VisibleMethod = VisibleMethod.Name)
         
         Make a list of layers visible based on layer names or ids
 
@@ -67,6 +73,10 @@ API Reference
     .. function:: Updater.show_all_layers(self)
         
         Make all layers visible
+
+    .. function:: Updater.hide_all_layers(self)
+        
+        Make all layers invisible
 
     .. function:: Updater.to_png(self, output_path: Union[os.PathLike, str], dpi = 96)
 

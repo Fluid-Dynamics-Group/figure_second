@@ -16,7 +16,7 @@ xshell = "0.2.2"
 
 [dependencies.inkscape]
 git = "https://github.com/VanillaBrooks/inkscape.git"
-rev = "2dbce5e547bad4f84d09487dc1005d4684bdf2f6"
+rev = "9cbdd6e55a94ae958fe45a29618f43778885dbb6"
 
 [dependencies.pyo3]
 version = "0.17.1"

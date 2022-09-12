@@ -273,7 +273,7 @@ checksum = "adab1eaa3408fb7f0c777a73e7465fd5656136fc93b670eb6df3c88c2c1344e3"
 [[package]]
 name = "inkscape"
 version = "0.1.0"
-source = "git+https://github.com/VanillaBrooks/inkscape.git?rev=2dbce5e547bad4f84d09487dc1005d4684bdf2f6#2dbce5e547bad4f84d09487dc1005d4684bdf2f6"
+source = "git+https://github.com/VanillaBrooks/inkscape.git?rev=9cbdd6e55a94ae958fe45a29618f43778885dbb6#9cbdd6e55a94ae958fe45a29618f43778885dbb6"
 dependencies = [
  "base64",
  "derive_more",

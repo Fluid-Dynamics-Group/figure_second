@@ -81,10 +81,21 @@
 <dd class="field-even"><p><p><code class="docutils literal notranslate"><span class="pre">Updater</span></code> class</p>
 <dl class="py function">
 <dt class="sig sig-object py" id="Updater.ids">
-<span class="sig-name descname"><span class="pre">ids</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span></span><a class="headerlink" href="#Updater.ids" title="Permalink to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">ids</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">list</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span></span><a class="headerlink" href="#Updater.ids" title="Permalink to this definition"></a></dt>
 <dd><dl class="field-list simple">
 <dt class="field-odd">Returns</dt>
 <dd class="field-odd"><p>A list of available ids belonging to either <cite>rect</cite> or <cite>image</cite> objects in the inkscape <code class="docutils literal notranslate"><span class="pre">base_file</span></code> <code class="docutils literal notranslate"><span class="pre">.svg</span></code></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="Updater.layer_names">
+<span class="sig-name descname"><span class="pre">layer_names</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">list</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span></span><a class="headerlink" href="#Updater.layer_names" title="Permalink to this definition"></a></dt>
+<dd><p>Parse all layer names in the document - useful for debugging behavior of hiding / showing layers</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>A list of all layer names in the document</p>
 </dd>
 </dl>
 </dd></dl>
@@ -146,7 +157,7 @@ given that you want to preserve the aspect ratio with the geometry from inkscape
 
 <dl class="py function">
 <dt class="sig sig-object py" id="Updater.hide_layers">
-<span class="sig-name descname"><span class="pre">hide_layers</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">name_or_ids</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">method</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#VisibleMethod" title="VisibleMethod"><span class="pre">VisibleMethod</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">VisibleMethod.Name</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#Updater.hide_layers" title="Permalink to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">hide_layers</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">name_or_ids</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">list</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">method</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#VisibleMethod" title="VisibleMethod"><span class="pre">VisibleMethod</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">VisibleMethod.Name</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#Updater.hide_layers" title="Permalink to this definition"></a></dt>
 <dd><p>Hide a list of layers from visibility based on names or ids</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -160,7 +171,7 @@ given that you want to preserve the aspect ratio with the geometry from inkscape
 
 <dl class="py function">
 <dt class="sig sig-object py" id="Updater.show_layers">
-<span class="sig-name descname"><span class="pre">show_layers</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">name_or_ids</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">method</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#VisibleMethod" title="VisibleMethod"><span class="pre">VisibleMethod</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">VisibleMethod.Name</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#Updater.show_layers" title="Permalink to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">show_layers</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">name_or_ids</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">list</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">method</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#VisibleMethod" title="VisibleMethod"><span class="pre">VisibleMethod</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">VisibleMethod.Name</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#Updater.show_layers" title="Permalink to this definition"></a></dt>
 <dd><p>Make a list of layers visible based on layer names or ids</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -176,6 +187,12 @@ given that you want to preserve the aspect ratio with the geometry from inkscape
 <dt class="sig sig-object py" id="Updater.show_all_layers">
 <span class="sig-name descname"><span class="pre">show_all_layers</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#Updater.show_all_layers" title="Permalink to this definition"></a></dt>
 <dd><p>Make all layers visible</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="Updater.hide_all_layers">
+<span class="sig-name descname"><span class="pre">hide_all_layers</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#Updater.hide_all_layers" title="Permalink to this definition"></a></dt>
+<dd><p>Make all layers invisible</p>
 </dd></dl>
 
 <dl class="py function">

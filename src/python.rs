@@ -1,5 +1,3 @@
-use crate::inkscape;
-
 use pyo3::exceptions::PyValueError;
 use pyo3::prelude::*;
 
@@ -10,6 +8,8 @@ use std::io::BufReader;
 use std::io::BufWriter;
 use std::path::Path;
 use std::path::PathBuf;
+
+use inkscape::Inkscape;
 
 #[pyclass]
 pub struct Updater {
@@ -34,7 +34,7 @@ impl Updater {
     pub fn ids(&self) -> PyResult<Vec<String>> {
         let inkscape =
             read_inkscape(&self.base_file).map_err(|e| PyValueError::new_err(e.to_string()))?;
-        Ok(inkscape.ids().map(Into::into).collect::<Vec<String>>())
+        Ok(inkscape.object_ids().map(Into::into).collect::<Vec<String>>())
     }
 
     pub fn update(&self, map: HashMap<String, PathBuf>) -> PyResult<()> {

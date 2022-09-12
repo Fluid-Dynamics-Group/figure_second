@@ -1,4 +1,3 @@
-pub mod inkscape;
 //#[cfg(feature="python")]
 pub mod python;
 

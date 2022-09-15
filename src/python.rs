@@ -111,7 +111,9 @@ impl Updater {
             if let Some(layer) = matched_layer {
                 layer.set_hidden();
             } else {
-                return Err(PyValueError::new_err(format!("layer {method} {name_or_id} was not found in the existing {method}s")));
+                return Err(PyValueError::new_err(format!(
+                    "layer {method} {name_or_id} was not found in the existing {method}s"
+                )));
             }
         }
 
@@ -138,7 +140,9 @@ impl Updater {
             if let Some(layer) = matched_layer {
                 layer.set_visible();
             } else {
-                return Err(PyValueError::new_err(format!("layer {method} {name_or_id} was not found in the existing {method}s")));
+                return Err(PyValueError::new_err(format!(
+                    "layer {method} {name_or_id} was not found in the existing {method}s"
+                )));
             }
         }
 
@@ -214,7 +218,7 @@ impl fmt::Display for VisibleMethod {
     fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
         match &self {
             Self::Id => write!(f, "id"),
-            Self::Name => write!(f, "name")
+            Self::Name => write!(f, "name"),
         }
     }
 }

@@ -18,6 +18,9 @@ Installing
 
    $ pip3 install figure_second
 
+``figure_second`` builds from an underlying high performance rust library.
+Therefore, you will need a recent rust compiler which can be installed 
+`here <https://www.rust-lang.org/tools/install>`_.
 
 Workflow
 ==================

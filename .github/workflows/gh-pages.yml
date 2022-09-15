@@ -22,14 +22,14 @@ jobs:
         run: |
           mkdir public
       #
-      # building jdocs w/ sphinx
+      # building julia docs
       #
       - name: check julia
         run: |
           julia --version
       - name: add julia packages
         run: |
-          julia -e 'using Pkg; Pkg.add("Documenter"); Pkg.add("Makie"); Pkg.add("PyCall")'
+          julia -e 'using Pkg; Pkg.add("Documenter"); Pkg.add("Makie"); Pkg.add("PyCall"); Pkg.add("Plots")'
       - name: build julia docs
         run: |
           cd ./julia/figure_second/docs

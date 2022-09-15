@@ -6,6 +6,7 @@ module figure_second
     export plot_figures
 
     using Makie
+    using Plots
 
     """
         plot_figures(updater::Updater, figure_map::Dict{String, Makie.Figure})
@@ -29,6 +30,36 @@ module figure_second
             file_path = Base.Filesystem.tempname(cleanup=true) * ".png"
 
             Makie.save(file_path, figure)
+
+            path_map[inkscape_id] = file_path
+        end
+
+
+        update(updater, path_map)
+    end
+
+    """
+        plot_figures(updater::Updater, figure_map::Dict{String, Plots.Plot})
+
+    **updater** is a wrapper around the python class. It represents the inkscape svg document
+    we are plotting on.
+
+    **figure_map** is a dictionary with keys containing `id`s of inkscape objects 
+    (rectangles or images) to plot on top of. The values of `figure_map` are 
+    figures to render (outputs of `Plots.jl` `plot()` functions. 
+
+    The user is responsible for filling each figure with content, and sizing it appropriately 
+    to the dimensions of the inkscape object. See [`relative_dimensions`](@ref) for sizing
+    considerations.
+    """
+    function plot_figures(updater::Updater, figure_map::Dict{String, Plots.Plot{T}}) where T
+
+        path_map::Dict{String, String} = Dict()
+
+        for (inkscape_id, figure) in figure_map
+            file_path = Base.Filesystem.tempname(cleanup=true) * ".png"
+
+            Plots.png(figure, file_path)
 
             path_map[inkscape_id] = file_path
         end

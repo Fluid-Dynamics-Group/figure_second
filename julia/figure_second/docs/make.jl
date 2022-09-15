@@ -7,9 +7,8 @@ using figure_second
 
 makedocs(
     sitename="figure_second",
-    html_prettyurls = true,
     pages = [
-        "Home" => "index.md",
+        "Home" => ["index.md", "install.md", "example.md"],
         "api.md"
     ]
 )

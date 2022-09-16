@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="UTF-8"/><meta name="viewport" content="width=device-width, initial-scale=1.0"/><title>Example · figure_second</title><script data-outdated-warner src="../assets/warner.js"></script><link href="https://cdnjs.cloudflare.com/ajax/libs/lato-font/3.0.0/css/lato-font.min.css" rel="stylesheet" type="text/css"/><link href="https://cdnjs.cloudflare.com/ajax/libs/juliamono/0.045/juliamono.min.css" rel="stylesheet" type="text/css"/><link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/fontawesome.min.css" rel="stylesheet" type="text/css"/><link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/solid.min.css" rel="stylesheet" type="text/css"/><link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/brands.min.css" rel="stylesheet" type="text/css"/><link href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.13.24/katex.min.css" rel="stylesheet" type="text/css"/><script>documenterBaseURL=".."</script><script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.6/require.min.js" data-main="../assets/documenter.js"></script><script src="../siteinfo.js"></script><script src="../../versions.js"></script><link class="docs-theme-link" rel="stylesheet" type="text/css" href="../assets/themes/documenter-dark.css" data-theme-name="documenter-dark" data-theme-primary-dark/><link class="docs-theme-link" rel="stylesheet" type="text/css" href="../assets/themes/documenter-light.css" data-theme-name="documenter-light" data-theme-primary/><script src="../assets/themeswap.js"></script></head><body><div id="documenter"><nav class="docs-sidebar"><div class="docs-package-name"><span class="docs-autofit"><a href="../">figure_second</a></span></div><form class="docs-search" action="../search/"><input class="docs-search-query" id="documenter-search-query" name="q" type="text" placeholder="Search docs"/></form><ul class="docs-menu"><li><span class="tocitem">Home</span><ul><li><a class="tocitem" href="../">Welcome</a></li><li><a class="tocitem" href="../install/">Installing</a></li><li class="is-active"><a class="tocitem" href>Example</a><ul class="internal"><li><a class="tocitem" href="#Defining-Layout-In-Inkscape"><span>Defining Layout In Inkscape</span></a></li><li><a class="tocitem" href="#Loading-the-Inkscape-document-in-Julia"><span>Loading the Inkscape document in Julia</span></a></li><li><a class="tocitem" href="#Plotting-into-Inkscape"><span>Plotting into Inkscape</span></a></li><li><a class="tocitem" href="#Sizing-plots-to-inkscape-layout"><span>Sizing plots to inkscape layout</span></a></li><li><a class="tocitem" href="#The-beauty-of-figure_second"><span>The beauty of <code>figure_second</code></span></a></li></ul></li></ul></li><li><a class="tocitem" href="../api/">API Reference</a></li></ul><div class="docs-version-selector field has-addons"><div class="control"><span class="docs-label button is-static is-size-7">Version</span></div><div class="docs-selector control is-expanded"><div class="select is-fullwidth is-size-7"><select id="documenter-version-selector"></select></div></div></div></nav><div class="docs-main"><header class="docs-navbar"><nav class="breadcrumb"><ul class="is-hidden-mobile"><li><a class="is-disabled">Home</a></li><li class="is-active"><a href>Example</a></li></ul><ul class="is-hidden-tablet"><li class="is-active"><a href>Example</a></li></ul></nav><div class="docs-right"><a class="docs-edit-link" href="https://github.com/Fluid-Dynamics-Group/figure_second/blob/master/julia/figure_second/docs/src/example.md" title="Edit on GitHub"><span class="docs-icon fab"></span><span class="docs-label is-hidden-touch">Edit on GitHub</span></a><a class="docs-settings-button fas fa-cog" id="documenter-settings-button" href="#" title="Settings"></a><a class="docs-sidebar-button fa fa-bars is-hidden-desktop" id="documenter-sidebar-button" href="#"></a></div></header><article class="content" id="documenter-page"><h1 id="Example"><a class="docs-heading-anchor" href="#Example">Example</a><a id="Example-1"></a><a class="docs-heading-anchor-permalink" href="#Example" title="Permalink"></a></h1><h2 id="Defining-Layout-In-Inkscape"><a class="docs-heading-anchor" href="#Defining-Layout-In-Inkscape">Defining Layout In Inkscape</a><a id="Defining-Layout-In-Inkscape-1"></a><a class="docs-heading-anchor-permalink" href="#Defining-Layout-In-Inkscape" title="Permalink"></a></h2><p>First, open inkscape and draw some rectangles with the <code>rectangle</code> tool (R):</p><p><img src="../figs/rectangles.png" alt/></p><p>Right click on each rectangle and click <code>Object Properties</code></p><p><img src="../figs/object_labels.png" alt/></p><p>Then, change the label to something memorable and click <code>Set</code> - this  will be how you reference each shape from julia. The rectangles in this example are labeled <code>A</code> <code>B</code> <code>C</code> and <code>D</code> as such:</p><p><img src="../figs/labeled_rect.png" alt/></p><p>Now open julia and import <code>figure_second</code> and either a <code>Makie</code> library or <code>Plots.jl</code>:</p><h2 id="Loading-the-Inkscape-document-in-Julia"><a class="docs-heading-anchor" href="#Loading-the-Inkscape-document-in-Julia">Loading the Inkscape document in Julia</a><a id="Loading-the-Inkscape-document-in-Julia-1"></a><a class="docs-heading-anchor-permalink" href="#Loading-the-Inkscape-document-in-Julia" title="Permalink"></a></h2><pre><code class="language-julia hljs">using figure_second
+using CairoMakie</code></pre><p>then, create an <code>Updater</code> object that holds information on where the inkscape file is on disk. If  you are ok with mutating the inkscape file in place, you can do</p><pre><code class="language-julia hljs">inkscape = updater(&quot;./path/to/file.svg&quot;)</code></pre><p>then, we can find all the ids of the rectangles we just created with <a href="../api/#figure_second.python_bindings.ids-Tuple{Updater}"><code>ids</code></a>:</p><pre><code class="language-julia hljs">ids(inkscape)
+# outputs: [&quot;A&quot; &quot;B&quot; &quot;C&quot; &quot;D&quot;]</code></pre><h2 id="Plotting-into-Inkscape"><a class="docs-heading-anchor" href="#Plotting-into-Inkscape">Plotting into Inkscape</a><a id="Plotting-into-Inkscape-1"></a><a class="docs-heading-anchor-permalink" href="#Plotting-into-Inkscape" title="Permalink"></a></h2><p>now, lets create general plotting function that we can reuse:</p><pre><code class="language-julia hljs">function my_plot(x, y, inkscape::Updater, inkscape_id::String)
+	# manually set a resolution
+	res = (600, 400)
+	
+	fig = Figure(resolution = res, dpi = 200)
+
+	ax = Axis(fig[1,1], title = inkscape_id)
+	
+	lines!(ax, x, y, linewidth=4)
+
+	return fig
+end</code></pre><p>and then place some data in the <code>A</code> rectangle for our figure:</p><pre><code class="language-julia hljs">x = range(0, 2pi, 100)
+A = my_plot(x, sin.(x), inkscape, &quot;A&quot;)
+
+# a dictionary of keys (name of inkscape ID) and values 
+# (figure objects)
+mapping = Dict(
+	&quot;A&quot; =&gt; A
+)
+
+# write all these figures into the inkscape svg
+plot_figures(inkscape, mapping)</code></pre><p>opening inkscape and going <code>File &gt; Revert</code>, we will force reload inkscape  to any changes that have happened in the file. Now the file looks like this:</p><p><img src="../figs/inkscape_A_result.png" alt/></p><p>Lets apply the same process to id <code>C</code>:</p><pre><code class="language-julia hljs">x = range(0, 2pi, 100)
+A = my_plot(x, sin.(x), inkscape, &quot;A&quot;)
+# new figure!
+C = my_plot(x, sin.(x), inkscape, &quot;B&quot;)
+
+# mapping of inkscape ids to figure objects
+mapping = Dict(
+	&quot;A&quot; =&gt; A,
+	&quot;C&quot; =&gt; C,
+)
+
+# write all these figures into the inkscape svg
+plot_figures(inkscape, mapping)</code></pre><p><img src="../figs/inkscape_AC_result.png" alt/></p><h2 id="Sizing-plots-to-inkscape-layout"><a class="docs-heading-anchor" href="#Sizing-plots-to-inkscape-layout">Sizing plots to inkscape layout</a><a id="Sizing-plots-to-inkscape-layout-1"></a><a class="docs-heading-anchor-permalink" href="#Sizing-plots-to-inkscape-layout" title="Permalink"></a></h2><p>it seems that <code>figure_second</code> is not respecting the aspect ratios of the inkscape objects which in turn causes the plots to fill the allocated space poorly. To fix this we can use the <a href="../api/#figure_second.python_bindings.relative_dimensions-Tuple{Updater, String, Float64}"><code>relative_dimensions</code></a> function to calculate a figure resolution that respects the inkscape aspect ratio. Updating our <code>my_plot</code>  function:</p><pre><code class="language-julia hljs">function my_plot(x, y, inkscape::Updater, inkscape_id::String)
+	
+	# every figure will have a height of 500, but the width will
+	# change to respect the aspect ratio of the output
+	desired_height = 500.
+	local res = relative_dimensions(inkscape, inkscape_id, desired_height)
+
+	fig = Figure(resolution = res, dpi = 200)
+
+	ax = Axis(fig[1,1], title = inkscape_id)
+	
+	lines!(ax, x, y, linewidth=4)
+
+	return fig
+end</code></pre><p>re-running the code and reloading the inkscape figure we have the following:</p><p><img src="../figs/inkscape_AC_result_aspect_fixed.png" alt/></p><p>then we can adjust our plotting commands for the other boxes:</p><pre><code class="language-julia hljs">x = range(0, 2pi, 100)
+A = my_plot(x, sin.(x), inkscape, &quot;A&quot;)
+C = my_plot(x, sin.(x), inkscape, &quot;C&quot;)
+B = my_plot(x, tan.(x), inkscape, &quot;B&quot;)
+D = my_plot(x, abs.(cos.(x)), inkscape, &quot;D&quot;)
+
+mapping = Dict(
+	&quot;A&quot;=&gt; A,
+	&quot;C&quot;=&gt; C,
+	&quot;B&quot;=&gt; B,
+	&quot;D&quot; =&gt; D
+)</code></pre><p><img src="../figs/inkscape_result_ABCD.png" alt/></p><h2 id="The-beauty-of-figure_second"><a class="docs-heading-anchor" href="#The-beauty-of-figure_second">The beauty of <code>figure_second</code></a><a id="The-beauty-of-figure_second-1"></a><a class="docs-heading-anchor-permalink" href="#The-beauty-of-figure_second" title="Permalink"></a></h2><p>Lets say we want to change all the line plots to scatter plots, and make all background colors different:</p><pre><code class="language-julia hljs">function my_plot(x, y, inkscape::Updater, inkscape_id::String)
+	# manually set a resolution
+	local res = (600, 400)
+	desired_height = 500.
+	local res = relative_dimensions(inkscape, inkscape_id, desired_height)
+	
+	fig = Figure(resolution = res, dpi = 200)
+
+	# now a black background
+	ax = Axis(fig[1,1], title = inkscape_id, backgroundcolor=:black)
+	
+	# now a scatter plot
+	scatter!(ax, x, y, linewidth=4)
+
+	return fig
+end</code></pre><p>our figure now looks like:</p><p><img src="../figs/inkscape_black_bg.png" alt/></p><p>Or, what if we moved all the rectangles in our figure:</p><p><img src="../figs/moved_rects.png" alt/></p><p>rerendering in julia:</p><p><img src="../figs/moved_rects_rerender.png" alt/></p></article><nav class="docs-footer"><a class="docs-footer-prevpage" href="../install/">« Installing</a><a class="docs-footer-nextpage" href="../api/">API Reference »</a><div class="flexbox-break"></div><p class="footer-message">Powered by <a href="https://github.com/JuliaDocs/Documenter.jl">Documenter.jl</a> and the <a href="https://julialang.org/">Julia Programming Language</a>.</p></nav></div><div class="modal" id="documenter-settings"><div class="modal-background"></div><div class="modal-card"><header class="modal-card-head"><p class="modal-card-title">Settings</p><button class="delete"></button></header><section class="modal-card-body"><p><label class="label">Theme</label><div class="select"><select id="documenter-themepicker"><option value="documenter-light">documenter-light</option><option value="documenter-dark">documenter-dark</option></select></div></p><hr/><p>This document was generated with <a href="https://github.com/JuliaDocs/Documenter.jl">Documenter.jl</a> version 0.27.23 on <span class="colophon-date" title="Friday 16 September 2022 00:12">Friday 16 September 2022</span>. Using Julia version 1.8.0.</p></section><footer class="modal-card-foot"></footer></div></div></div></body></html>
